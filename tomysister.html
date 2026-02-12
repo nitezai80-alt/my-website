@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Kak Lenti 🌸</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0; padding: 0; overflow: hidden;
+            font-family: 'Quicksand', sans-serif;
+            background: #fdf0f6;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text y="24" font-size="24">🌸</text></svg>'), auto;
+        }
+
+        .scene {
+            display: none; width: 100vw; height: 100vh;
+            position: relative; opacity: 0; transition: opacity 1.5s ease-in-out;
+        }
+
+        .active { display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 1; }
+
+        /* INTRO SCENE */
+        #intro { background: #fff5f8; }
+        .envelope { font-size: 100px; cursor: pointer; animation: sway 3s infinite ease-in-out; }
+        @keyframes sway { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+
+        /* SCENE 1 - CLOUD GAME */
+        #scene1 { background: linear-gradient(to bottom, #a1c4fd, #c2e9fb); }
+        .cloud-game { position: absolute; font-size: 70px; cursor: pointer; transition: 0.5s; z-index: 10; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1)); }
+        .instruction { position: absolute; top: 80px; text-align: center; color: white; font-weight: bold; padding: 0 20px; }
+        .sun-glow { font-size: 100px; animation: glow 2s infinite alternate; }
+        @keyframes glow { from { filter: drop-shadow(0 0 10px #fff); transform: scale(1); } to { filter: drop-shadow(0 0 30px #ffd700); transform: scale(1.1); } }
+
+        /* SCENE 2 - HEALING */
+        #scene2 { background: linear-gradient(to bottom, #fbc2eb, #a6c1ee); }
+        .tea-cup { font-size: 80px; margin-bottom: 20px; animation: steam 2s infinite; }
+        @keyframes steam { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .message-bubble { background: rgba(255,255,255,0.85); padding: 25px; border-radius: 30px; text-align: center; max-width: 80%; box-shadow: 0 15px 30px rgba(0,0,0,0.1); border: 2px solid #fff; }
+
+        /* SCENE 3 - LETTER */
+        #scene3 { background: linear-gradient(to bottom, #fad0c4, #ffd1ff); }
+        .heart-text { font-family: 'Dancing Script', cursive; font-size: 24px; color: #6d4c41; text-align: center; margin: 12px; line-height: 1.5; opacity: 0; animation: fadeIn 1s forwards; }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        /* SCENE 4 - GARDEN */
+        #scene4 { background: linear-gradient(to bottom, #fff1eb, #ace0f9); }
+        .floating-item { position: absolute; font-size: 50px; cursor: pointer; z-index: 5; transition: 3s linear; }
+
+        /* BUTTONS */
+        .btn-next { background: #fff; color: #ff9a9e; padding: 14px 28px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; margin-top: 20px; box-shadow: 0 5px 15px rgba(255,154,158,0.3); transition: 0.3s; }
+        .btn-next:hover { background: #ff9a9e; color: #fff; transform: translateY(-3px); }
+        
+        .hidden { display: none !important; }
+        .star-trail { position: absolute; pointer-events: none; font-size: 14px; animation: starFade 1s forwards; z-index: 9999; }
+        @keyframes starFade { 0% { opacity: 1; } 100% { transform: scale(0) translateY(-20px); opacity: 0; } }
+        .confetti { position: absolute; pointer-events: none; z-index: 100; animation: explode 1s forwards; font-size: 30px; }
+        @keyframes explode { 0% { transform: translate(0,0); opacity: 1; } 100% { transform: translate(var(--x), var(--y)); opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <section id="intro" class="scene active">
+        <p style="color: #ff9a9e; font-weight: bold; margin-bottom: 20px;">Halo, Kak Lenti sayang... 🌸</p>
+        <div class="envelope" onclick="goToScene(1)">💌</div>
+        <p style="color: #888; font-size: 14px; margin-top: 20px;">(Ketuk suratnya untuk membuka)</p>
+    </section>
+
+    <section id="scene1" class="scene">
+        <div class="instruction">
+            <h3>Kadang hari-hari terasa mendung ya, Kak? ☁️</h3>
+            <p>Yuk, bantu Nite hapus awan abu-abunya satu-satu...</p>
+        </div>
+        <div id="clouds-container"></div>
+        <div id="sun-box" class="hidden" style="text-align: center; z-index: 20;">
+            <div class="sun-glow">☀️</div>
+            <h2 style="color: white; text-shadow: 2px 2px 10px rgba(0,0,0,0.2);">Sinar Kak Lenti kembali cerah!</h2>
+            <button class="btn-next" onclick="goToScene(2)">Terima kasih, Nite 🌸</button>
+        </div>
+    </section>
+
+    <section id="scene2" class="scene">
+        <div class="tea-cup">☕</div>
+        <div class="message-bubble">
+            <p id="healing-text" style="font-size: 19px; color: #444; min-height: 60px;"></p>
+            <button id="next-healing" class="btn-next" onclick="nextHealingMsg()">Lanjut 🌸</button>
+            <button id="to-scene3" class="btn-next hidden" onclick="goToScene(3)">Baca Surat Nite ✨</button>
+        </div>
+    </section>
+
+    <section id="scene3" class="scene">
+        <div id="letter-box" style="padding: 20px; max-width: 85%; background: rgba(255,255,255,0.4); border-radius: 20px;"></div>
+        <button id="btn-letter" class="btn-next" onclick="typeLetter()">Baca pelan-pelan ya Kak.. 🤍</button>
+        <button id="to-scene4" class="btn-next hidden" onclick="goToScene(4)">Satu hal terakhir... 🕊️</button>
+    </section>
+
+    <section id="scene4" class="scene">
+        <div style="text-align:center; padding: 20px; z-index: 10;">
+            <h2 style="color: #ff9a9e; font-family: 'Dancing Script'; font-size: 35px;">You are never alone.</h2>
+            <p style="color: #666; font-size: 14px;">Klik hal-hal cantik di layar untuk doa Nite...</p>
+        </div>
+        
+        <div class="floating-item" onclick="blessing(event, '🌸', 'Hati yang damai buat Kakak.')">🌸</div>
+        <div class="floating-item" onclick="blessing(event, '✨', 'Kakak adalah berkat bagi banyak bayi.')">✨</div>
+        <div class="floating-item" onclick="blessing(event, '☁️', 'Tuhan selalu menjaga langkah Kakak.')">☁️</div>
+        <div class="floating-item" onclick="blessing(event, '🕊️', 'Kasih-Nya adalah kekuatan Kakak.')">🕊️</div>
+
+        <button class="btn-next" style="margin-top: 50px;" onclick="spawnConfetti(event, '💖')">Click for Virtual Hug 🤗</button>
+        <p style="margin-top: 20px; font-size: 14px; color: #888;">With love, Nite.</p>
+    </section>
+
+    <script>
+        let cloudCount = 0;
+
+        function goToScene(num) {
+            document.querySelectorAll('.scene').forEach(s => { s.classList.remove('active'); s.style.display = 'none'; });
+            const next = document.getElementById('scene' + num);
+            next.style.display = 'flex';
+            setTimeout(() => next.classList.add('active'), 50);
+            if(num === 1) createClouds();
+            if(num === 4) startFloating();
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            const star = document.createElement('div');
+            star.className = 'star-trail';
+            star.textContent = '✨';
+            star.style.left = e.pageX + 'px'; star.style.top = e.pageY + 'px';
+            document.body.appendChild(star);
+            setTimeout(() => star.remove(), 1000);
+        });
+
+        function createClouds() {
+            const container = document.getElementById('clouds-container');
+            container.innerHTML = '';
+            for(let i=0; i<6; i++) {
+                const c = document.createElement('div');
+                c.className = 'cloud-game';
+                c.textContent = '☁️';
+                c.style.left = Math.random() * 80 + 10 + 'vw';
+                c.style.top = Math.random() * 60 + 20 + 'vh';
+                c.onclick = (e) => {
+                    spawnConfetti(e, '✨');
+                    c.style.transform = 'scale(0)';
+                    setTimeout(() => c.remove(), 500);
+                    cloudCount++;
+                    if(cloudCount >= 6) {
+                        document.querySelector('.instruction').classList.add('hidden');
+                        document.getElementById('sun-box').classList.remove('hidden');
+                    }
+                };
+                container.appendChild(c);
+            }
+        }
+
+        const healingMsgs = [
+            "Kak Lenti, Nite tau Kakak lelah hari ini...",
+            "Dunia NICU mungkin berat, tapi tangan Kakak adalah keajaiban bagi bayi-bayi itu.",
+            "Makasih ya sudah jadi Kakak yang paling sabar dan lembut.",
+            "Kakak itu pemberani, meskipun kadang merasa rapuh.",
+            "Istirahat sebentar ya, Kak... Nite temenin di sini. ☕"
+        ];
+        let hIdx = 0;
+        function nextHealingMsg() {
+            if(hIdx < healingMsgs.length) {
+                document.getElementById('healing-text').textContent = healingMsgs[hIdx];
+                hIdx++;
+            } else {
+                document.getElementById('next-healing').classList.add('hidden');
+                document.getElementById('to-scene3').classList.remove('hidden');
+            }
+        }
+        nextHealingMsg();
+
+        const letterLines = [
+            "Untuk Kak Lenti tersayang,",
+            "Nite mau bilang kalau Nite banggaaaa banget punya Kakak.",
+            "Kakak itu cantik, anggun, bijak, dan punya hati seluas samudera.",
+            "Tuhan titipkan bayi-bayi kecil itu ke Kakak karena Tuhan tau Kakak tulus.",
+            "Jangan pernah lupa kalau Kakak berharga, Kakak disayang,",
+            "Dan yang paling penting, Kakak selalu ada dalam pelukan kasih Tuhan.",
+            "Semoga Kakak selalu dikuatkan dan diberkati setiap langkahnya.",
+            "Nite sayang banget sama Kak Lenti. ❤️"
+        ];
+        let lIdx = 0;
+        function typeLetter() {
+            document.getElementById('btn-letter').classList.add('hidden');
+            let inter = setInterval(() => {
+                if(lIdx < letterLines.length) {
+                    const p = document.createElement('div');
+                    p.className = 'heart-text';
+                    p.textContent = letterLines[lIdx];
+                    document.getElementById('letter-box').appendChild(p);
+                    lIdx++;
+                } else {
+                    clearInterval(inter);
+                    document.getElementById('to-scene4').classList.remove('hidden');
+                }
+            }, 2000);
+        }
+
+        function startFloating() {
+            const items = document.querySelectorAll('.floating-item');
+            items.forEach(a => {
+                setInterval(() => {
+                    const x = Math.random() * (window.innerWidth - 60);
+                    const y = Math.random() * (window.innerHeight - 200) + 100;
+                    a.style.transform = `translate(${x}px, ${y}px)`;
+                }, 3000);
+            });
+        }
+
+        function blessing(e, char, msg) {
+            spawnConfetti(e, char);
+            const p = document.createElement('div');
+            p.style.position = 'fixed';
+            p.style.top = '70%'; p.style.left = '50%';
+            p.style.transform = 'translate(-50%, -50%)';
+            p.style.background = 'white'; p.style.padding = '12px 24px';
+            p.style.borderRadius = '30px'; p.style.boxShadow = '0 10px 25px rgba(0,0,0,0.1)';
+            p.style.zIndex = '100'; p.style.color = '#ff9a9e'; p.style.fontWeight = 'bold';
+            p.textContent = msg;
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 2500);
+        }
+
+        function spawnConfetti(e, char) {
+            for(let i=0; i<15; i++) {
+                const c = document.createElement('div');
+                c.className = 'confetti';
+                c.textContent = char;
+                const x = (Math.random() - 0.5) * 400 + 'px';
+                const y = (Math.random() - 0.5) * 400 + 'px';
+                c.style.setProperty('--x', x); c.style.setProperty('--y', y);
+                c.style.left = e.clientX + 'px'; c.style.top = e.clientY + 'px';
+                document.body.appendChild(c);
+                setTimeout(() => c.remove(), 1000);
+            }
+        }
+    </script>
+</body>
+</html>
