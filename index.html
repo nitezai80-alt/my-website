@@ -3,24 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Kak Lenti 🌸</title>
-    <style>
-        body { margin: 0; font-family: 'Arial', sans-serif; }
-        /* Add CSS styles for scenes and animations here */
-    </style>
+    <title>Interactive Website</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="intro-envelope">Intro Envelope Content</div>
-    <div id="cloud-game">Cloud Game Area</div>
-    <div id="healing-tea">Healing Tea Scene</div>
-    <div id="letter-scene">Letter Scene with Typing Animation</div>
-    <div id="garden-blessing">Garden Blessing Scene with Floating Items and Confetti</div>
+    <header>
+        <h1>Welcome to Our Interactive Website</h1>
+        <nav>
+            <ul>
+                <li><a href="#envelope">Envelope</a></li>
+                <li><a href="#cloud-game">Cloud Game</a></li>
+                <li><a href="#healing-tea">Healing Tea</a></li>
+                <li><a href="#letter-typing">Letter Typing</a></li>
+                <li><a href="#garden-blessing">Garden Blessing</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <script>
-        // Add JavaScript code for interactive features here
-        function init() {
-            // Initialization code
-        }
-    </script>
+    <section id="envelope">
+        <h2>Envelope Feature</h2>
+        <p>Here you can send virtual letters!</p>
+        <button onclick="sendEnvelope()">Send Envelope</button>
+    </section>
+
+    <section id="cloud-game">
+        <h2>Cloud Game</h2>
+        <p>Play our fun cloud game!</p>
+        <button onclick="startCloudGame()">Start Game</button>
+    </section>
+
+    <section id="healing-tea">
+        <h2>Healing Tea</h2>
+        <p>Learn about different types of healing teas.</p>
+        <button onclick="showHealingTea()">Show Teas</button>
+    </section>
+
+    <section id="letter-typing">
+        <h2>Letter Typing</h2>
+        <p>Type a letter below:</p>
+        <textarea id="letterContent" rows="5" cols="30"></textarea>
+        <button onclick="submitLetter()">Submit Letter</button>
+    </section>
+
+    <section id="garden-blessing">
+        <h2>Garden Blessing</h2>
+        <p>Send blessings to the garden!</p>
+        <button onclick="sendBlessing()">Bless the Garden</button>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Interactive Website</p>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
